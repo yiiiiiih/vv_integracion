@@ -64,11 +64,9 @@ public class TestValidUser {
 	@Test
 	public void stopRemoteTest() throws Exception{
 		// comportamiento del mock
-		when(dao.getSomeData(user, "where id= " +idValido)).thenReturn(lista);
+		when(dao.getSomeData(user, "where id=" +idValido)).thenReturn(lista);
 		
 		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idValido);
-		System.out.print(retorno.toString());
-		retorno.toString();
 		assertEquals(retorno.toString(), "[uno, dos]");
 		ordered.verify(authDAO).getAuthData(user.getId());
 		ordered.verify(dao).getSomeData(user, "where id=" + idValido);
