@@ -2,6 +2,7 @@ package com.practica.integracion;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -28,10 +29,11 @@ public class TestValidUser {
 	private String idValido = "12345"; 
 	private ArrayList<Object> lista = new ArrayList<>(Arrays.asList("uno", "dos"));
 	private InOrder ordered;
-	@Mock
-	private AuthDAO authDAO;
-	@Mock
-	private GenericDAO dao;
+	
+	AuthDAO authDAO = mock(AuthDAO.class);
+	
+	GenericDAO dao = mock(GenericDAO.class);
+
 	private SystemManager manager;
 	@BeforeEach
 	public void initialization() {
