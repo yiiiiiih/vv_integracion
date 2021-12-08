@@ -22,6 +22,7 @@ import com.practica.integracion.manager.SystemManager;
 
 @ExtendWith(MockitoExtension.class)
 public class TestInvalidUser {
+	/*
 	GenericDAO mockGenericDao = mock(GenericDAO.class);
 	AuthDAO mockAuthDao = mock(AuthDAO.class);
 	
@@ -58,5 +59,5 @@ public class TestInvalidUser {
 	public void testDeleteRemoteSystem(String userId, String remoteId) {
 		
 	}
-
+*/
 }
