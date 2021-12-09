@@ -46,13 +46,13 @@ public class TestInvalidUser {
 		when(authDAO.getAuthData(user.getId())).thenReturn(null);
 	}
 	@Test
-	public void startRemoteTest() throws Exception {
-		when(dao.getSomeData(null, "where id=" + idValido)).thenThrow(new OperationNotSupportedException("Usuario no autorizado"));
-	
-		assertThrows(SystemManagerException.class, () -> {manager.startRemoteSystem(user.getId(), idValido);});
-
+	public void testStartRemoteSystemWithInvalidUserAndSystem() throws Exception {
+		when(dao.getSomeData(user, "where id=" + idInvalido)).thenReturn(lista);
+			
+		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idInvalido);
+		assertEquals(retorno.toString(), "[uno, dos]");
 		ordered.verify(authDAO).getAuthData(user.getId());
-		ordered.verify(dao).getSomeData(null, "where id=" + idValido);
+		ordered.verify(dao).getSomeData(user, "where id=" + idInvalido);
 	}
 	@Test
 	public void addRemoteTest() throws Exception {
