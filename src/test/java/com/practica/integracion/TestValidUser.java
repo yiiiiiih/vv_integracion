@@ -52,6 +52,15 @@ public class TestValidUser {
 		ordered.verify(dao).getSomeData(user, "where id=" + idValido);
 	}
 	@Test
+	public void testStartRemoteSystemWithValidUserInvalidSystem() throws Exception {
+		when(dao.getSomeData(user, "where id=" + idInvalido)).thenReturn(lista);
+			
+		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idInvalido);
+		assertEquals(retorno.toString(), "[uno, dos]");
+		ordered.verify(authDAO).getAuthData(user.getId());
+		ordered.verify(dao).getSomeData(user, "where id=" + idInvalido);
+	}
+	@Test
 	public void testAddRemoteSystemWithValidUserAndSystem() throws Exception {
 		when(dao.updateSomeData(user, "tres")).thenReturn(true);
 
@@ -61,7 +70,16 @@ public class TestValidUser {
 		ordered.verify(dao).updateSomeData(user, "tres");
 	}
 	@Test
-	public void stopRemoteTest() throws Exception{
+	public void testAddRemoteSystemWithValidUserInvalidSystem() throws Exception {
+		when(dao.updateSomeData(user, "tres")).thenReturn(true);
+
+		manager.addRemoteSystem(user.getId(), "tres");
+		
+		ordered.verify(authDAO).getAuthData(user.getId());
+		ordered.verify(dao).updateSomeData(user, "tres");
+	}
+	@Test
+	public void testStopRemoteSystemWithValidUserAndSystem() throws Exception{
 		when(dao.getSomeData(user, "where id=" +idValido)).thenReturn(lista);
 		
 		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idValido);
@@ -70,7 +88,17 @@ public class TestValidUser {
 		ordered.verify(dao).getSomeData(user, "where id=" + idValido);
 	}
 	@Test
-	public void deleteRemoteTest() throws Exception {
+	public void testStopRemoteSystemWithValidUserInvalidSystem() throws Exception{
+		when(dao.getSomeData(user, "where id=" +idValido)).thenReturn(lista);
+		
+		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idValido);
+		assertEquals(retorno.toString(), "[uno, dos]");
+		ordered.verify(authDAO).getAuthData(user.getId());
+		ordered.verify(dao).getSomeData(user, "where id=" + idValido);
+	}
+	
+	@Test
+	public void testDeleteRemoteSystemValidUserAndSystem() throws Exception {
 
 		when(dao.deleteSomeData(user, idValido)).thenReturn(true);
 		
@@ -78,5 +106,15 @@ public class TestValidUser {
 		ordered.verify(authDAO).getAuthData(user.getId());
 		ordered.verify(dao).deleteSomeData(user, idValido);
 	}
+	@Test
+	public void testDeleteRemoteSystemValidUserInvalidSystem() throws Exception {
+
+		when(dao.deleteSomeData(user, idValido)).thenReturn(true);
+		
+		manager.deleteRemoteSystem(user.getId(), idValido);
+		ordered.verify(authDAO).getAuthData(user.getId());
+		ordered.verify(dao).deleteSomeData(user, idValido);
+	}
+
 
 }
