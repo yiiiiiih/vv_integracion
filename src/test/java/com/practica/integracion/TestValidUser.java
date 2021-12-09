@@ -26,7 +26,8 @@ import com.practica.integracion.manager.SystemManagerException;
 public class TestValidUser {
 
 	private User user = new User("1", "Antonio", "Perez", "Madrid", new ArrayList<Object>(Arrays.asList(1, 2)));
-	private String idValido = "12345"; 
+	private String idValido = "12345";
+	private String idInvalido= null;
 	private ArrayList<Object> lista = new ArrayList<>(Arrays.asList("uno", "dos"));
 	private InOrder ordered;
 	
@@ -42,8 +43,7 @@ public class TestValidUser {
 		when(authDAO.getAuthData(user.getId())).thenReturn(user);
 	}
 	@Test
-	public void startRemoteTest() throws Exception {
-		// comportamiento del mock
+	public void testStartRemoteSystemWithValidUserAndSystem() throws Exception {
 		when(dao.getSomeData(user, "where id=" + idValido)).thenReturn(lista);
 			
 		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idValido);
@@ -52,8 +52,7 @@ public class TestValidUser {
 		ordered.verify(dao).getSomeData(user, "where id=" + idValido);
 	}
 	@Test
-	public void addRemoteTest() throws Exception {
-		// comportamiento del mock
+	public void testAddRemoteSystemWithValidUserAndSystem() throws Exception {
 		when(dao.updateSomeData(user, "tres")).thenReturn(true);
 
 		manager.addRemoteSystem(user.getId(), "tres");
@@ -63,7 +62,6 @@ public class TestValidUser {
 	}
 	@Test
 	public void stopRemoteTest() throws Exception{
-		// comportamiento del mock
 		when(dao.getSomeData(user, "where id=" +idValido)).thenReturn(lista);
 		
 		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idValido);
@@ -73,7 +71,7 @@ public class TestValidUser {
 	}
 	@Test
 	public void deleteRemoteTest() throws Exception {
-		// comportamiento del mock
+
 		when(dao.deleteSomeData(user, idValido)).thenReturn(true);
 		
 		manager.deleteRemoteSystem(user.getId(), idValido);
