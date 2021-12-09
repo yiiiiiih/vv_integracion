@@ -76,7 +76,7 @@ public class TestInvalidUser {
 	@Test
 	public void testDeleteRemoteTestSystemWithInValidUserAndSystem() throws Exception {
 
-		when(dao.deleteSomeData(user, idValido)).thenReturn(true);
+		when(dao.deleteSomeData(user, idInvalido)).thenReturn(true);
 		
 		manager.deleteRemoteSystem(user.getId(), idInvalido);
 		ordered.verify(authDAO).getAuthData(user.getId());
