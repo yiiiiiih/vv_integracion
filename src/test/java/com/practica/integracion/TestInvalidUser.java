@@ -29,9 +29,8 @@ import com.practica.integracion.manager.SystemManagerException;
 @ExtendWith(MockitoExtension.class)
 public class TestInvalidUser {
 
-	private User user = new User("1", "Antonio", "Perez", "Madrid", new ArrayList<Object>(Arrays.asList(1, 2)));
+	private User user = new User("1", "Invalido", "Invalido", "Invalido", new ArrayList<Object>());
 	private String idValido = "12345"; 
-	private String idInvalido = null; 
 	private ArrayList<Object> lista = new ArrayList<>(Arrays.asList("uno", "dos"));
 	private InOrder ordered;
 	
@@ -47,40 +46,43 @@ public class TestInvalidUser {
 		when(authDAO.getAuthData(user.getId())).thenReturn(null);
 	}
 	@Test
-	public void testStartRemoteSystemWithInvalidUserAndSystem() throws Exception {
-		when(dao.getSomeData(user, "where id=" + idInvalido)).thenReturn(lista);
-			
-		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idInvalido);
-		assertEquals(retorno.toString(), "[uno, dos]");
-		ordered.verify(authDAO).getAuthData(user.getId());
-		ordered.verify(dao).getSomeData(user, "where id=" + idInvalido);
-	}
-	@Test
-	public void testAddRemoteSystemWithInValidUserAndSystem() throws Exception {
-		when(dao.updateSomeData(user, "tres")).thenReturn(true);
+	public void startRemoteTest() throws Exception {
+		when(dao.getSomeData(null, "where id=" + idValido)).thenThrow(new OperationNotSupportedException("Usuario no autorizado"));
+	
+		assertThrows(SystemManagerException.class, () -> {manager.startRemoteSystem(user.getId(), idValido);});
 
-		manager.addRemoteSystem(user.getId(), "tres");
-		
 		ordered.verify(authDAO).getAuthData(user.getId());
-		ordered.verify(dao).updateSomeData(user, "tres");
+		ordered.verify(dao).getSomeData(null, "where id=" + idValido);
 	}
 	@Test
-	public void testStopRemoteSystemWithInValidUserAndSystem() throws Exception{
-		when(dao.getSomeData(user, "where id=" +idInvalido)).thenReturn(lista);
-		
-		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idInvalido);
-		assertEquals(retorno.toString(), "[uno, dos]");
-		ordered.verify(authDAO).getAuthData(user.getId());
-		ordered.verify(dao).getSomeData(user, "where id=" + idInvalido);
-	}
-	@Test
-	public void testDeleteRemoteTestSystemWithInValidUserAndSystem() throws Exception {
+	public void addRemoteTest() throws Exception {
+		when(dao.updateSomeData(null, "tres")).thenThrow(new OperationNotSupportedException("Usuario no autorizado"));
 
-		when(dao.deleteSomeData(user, idInvalido)).thenReturn(true);
+		assertThrows(SystemManagerException.class, () -> {manager.addRemoteSystem(user.getId(), "tres");});
+
 		
-		manager.deleteRemoteSystem(user.getId(), idInvalido);
 		ordered.verify(authDAO).getAuthData(user.getId());
-		ordered.verify(dao).deleteSomeData(user, idInvalido);
+		ordered.verify(dao).updateSomeData(null, "tres");
+	}
+	@Test
+	public void stopRemoteTest() throws Exception{
+		when(dao.getSomeData(null, "where id=" +idValido)).thenThrow(new OperationNotSupportedException("Usuario no autorizado"));
+
+		assertThrows(SystemManagerException.class, () -> {manager.startRemoteSystem(user.getId(), idValido);});
+		
+		ordered.verify(authDAO).getAuthData(user.getId());
+		ordered.verify(dao).getSomeData(null, "where id=" + idValido);
+	}
+	@Test
+	public void deleteRemoteTest() throws Exception {
+
+		when(dao.deleteSomeData(null, idValido)).thenThrow(new OperationNotSupportedException("Usuario no autorizado"));
+
+		assertThrows(SystemManagerException.class, () -> {manager.deleteRemoteSystem(user.getId(), idValido);});
+
+		
+		ordered.verify(authDAO).getAuthData(user.getId());
+		ordered.verify(dao).deleteSomeData(null, idValido);
 	}
 
 }
