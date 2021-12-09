@@ -1,6 +1,7 @@
 package com.practica.integracion;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -53,10 +54,10 @@ public class TestValidUser {
 	}
 	@Test
 	public void testStartRemoteSystemWithValidUserInvalidSystem() throws Exception {
-		when(dao.getSomeData(user, "where id=" + idInvalido)).thenReturn(lista);
+		when(dao.getSomeData(user, "where id=" + idInvalido)).thenReturn(null);
 			
 		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idInvalido);
-		assertEquals(retorno.toString(), "[uno, dos]");
+		assertEquals(retorno, null);
 		ordered.verify(authDAO).getAuthData(user.getId());
 		ordered.verify(dao).getSomeData(user, "where id=" + idInvalido);
 	}
@@ -71,12 +72,12 @@ public class TestValidUser {
 	}
 	@Test
 	public void testAddRemoteSystemWithValidUserInvalidSystem() throws Exception {
-		when(dao.updateSomeData(user, "tres")).thenReturn(true);
+		when(dao.updateSomeData(user, null)).thenReturn(false);
 
-		manager.addRemoteSystem(user.getId(), "tres");
-		
+		assertThrows(SystemManagerException.class, () -> {manager.addRemoteSystem(user.getId(), null);});
+
 		ordered.verify(authDAO).getAuthData(user.getId());
-		ordered.verify(dao).updateSomeData(user, "tres");
+		ordered.verify(dao).updateSomeData(user, null);
 	}
 	@Test
 	public void testStopRemoteSystemWithValidUserAndSystem() throws Exception{
@@ -89,12 +90,12 @@ public class TestValidUser {
 	}
 	@Test
 	public void testStopRemoteSystemWithValidUserInvalidSystem() throws Exception{
-		when(dao.getSomeData(user, "where id=" +idValido)).thenReturn(lista);
+		when(dao.getSomeData(user, "where id=" +idInvalido)).thenReturn(null);
 		
-		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idValido);
-		assertEquals(retorno.toString(), "[uno, dos]");
+		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idInvalido);
+		assertEquals(retorno,null);
 		ordered.verify(authDAO).getAuthData(user.getId());
-		ordered.verify(dao).getSomeData(user, "where id=" + idValido);
+		ordered.verify(dao).getSomeData(user, "where id=" + idInvalido);
 	}
 	
 	@Test
@@ -109,11 +110,11 @@ public class TestValidUser {
 	@Test
 	public void testDeleteRemoteSystemValidUserInvalidSystem() throws Exception {
 
-		when(dao.deleteSomeData(user, idValido)).thenReturn(true);
+		when(dao.deleteSomeData(user, idInvalido)).thenReturn(false);
 		
-		manager.deleteRemoteSystem(user.getId(), idValido);
+		assertThrows(SystemManagerException.class, () -> {manager.deleteRemoteSystem(user.getId(), idInvalido);});
 		ordered.verify(authDAO).getAuthData(user.getId());
-		ordered.verify(dao).deleteSomeData(user, idValido);
+		ordered.verify(dao).deleteSomeData(user, idInvalido);
 	}
 
 
