@@ -29,7 +29,7 @@ import com.practica.integracion.manager.SystemManagerException;
 @ExtendWith(MockitoExtension.class)
 public class TestInvalidUser {
 
-	private User user = new User("1", "Antonio", "Perez", "Madrid", new ArrayList<Object>(Arrays.asList(1, 2)));
+	private User user = new User("1", "Invalido", "Invalido", "Invalido", new ArrayList<Object>());
 	private String idValido = "12345"; 
 	private ArrayList<Object> lista = new ArrayList<>(Arrays.asList("uno", "dos"));
 	private InOrder ordered;
