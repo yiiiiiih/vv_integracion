@@ -1,6 +1,7 @@
 package com.practica.integracion;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -57,7 +58,7 @@ public class TestValidUser {
 		when(dao.getSomeData(user, "where id=" + idInvalido)).thenReturn(null);
 			
 		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idInvalido);
-		assertEquals(retorno, null);
+		assertNull(retorno);
 		ordered.verify(authDAO).getAuthData(user.getId());
 		ordered.verify(dao).getSomeData(user, "where id=" + idInvalido);
 	}
@@ -93,7 +94,7 @@ public class TestValidUser {
 		when(dao.getSomeData(user, "where id=" +idInvalido)).thenReturn(null);
 		
 		Collection<Object> retorno = manager.startRemoteSystem(user.getId(), idInvalido);
-		assertEquals(retorno,null);
+		assertNull(retorno);
 		ordered.verify(authDAO).getAuthData(user.getId());
 		ordered.verify(dao).getSomeData(user, "where id=" + idInvalido);
 	}
@@ -102,8 +103,6 @@ public class TestValidUser {
 	public void testDeleteRemoteSystemValidUserAndSystem() throws Exception {
 
 		when(dao.deleteSomeData(user, idValido)).thenReturn(true);
-		
-		manager.deleteRemoteSystem(user.getId(), idValido);
 		ordered.verify(authDAO).getAuthData(user.getId());
 		ordered.verify(dao).deleteSomeData(user, idValido);
 	}
