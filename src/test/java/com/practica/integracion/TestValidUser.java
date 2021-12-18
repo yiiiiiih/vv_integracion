@@ -103,6 +103,7 @@ public class TestValidUser {
 	public void testDeleteRemoteSystemValidUserAndSystem() throws Exception {
 
 		when(dao.deleteSomeData(user, idValido)).thenReturn(true);
+		manager.deleteRemoteSystem(user.getId(), idValido);
 		ordered.verify(authDAO).getAuthData(user.getId());
 		ordered.verify(dao).deleteSomeData(user, idValido);
 	}
